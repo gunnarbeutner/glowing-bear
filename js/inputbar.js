@@ -385,12 +385,12 @@ weechat.directive('inputBar', function() {
                 }
 
                 // Alt+L -> focus on input bar
-                if ($event.altKey && (code === 76 || code === 108)) {
+                /*if ($event.altKey && (code === 76 || code === 108)) {
                     $event.preventDefault();
                     inputNode.focus();
                     inputNode.setSelectionRange($scope.command.length, $scope.command.length);
                     return true;
-                }
+                }*/
 
                 // Alt+< -> switch to previous buffer
                 // https://w3c.github.io/uievents-code/#code-IntlBackslash
