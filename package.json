@@ -18,7 +18,8 @@
     "karma-phantomjs-launcher": "^1.0.0",
     "protractor": "^5.4.1",
     "shelljs": "^0.8.0",
-    "uglify-js": "^3.4.9"
+    "uglify-js": "^3.4.9",
+    "angular-base64": "^2.0.4"
   },
   "scripts": {
     "postinstall": "bower install -p",

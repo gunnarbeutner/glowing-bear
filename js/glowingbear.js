@@ -8,7 +8,7 @@ document.addEventListener("deviceready", function () {
     }
 }, false);
 
-var weechat = angular.module('weechat', ['ngRoute', 'localStorage', 'weechatModels', 'bufferResume', 'plugins', 'IrcUtils', 'ngSanitize', 'ngWebsockets', 'ngTouch'], ['$compileProvider', function($compileProvider) {
+var weechat = angular.module('weechat', ['ngRoute', 'localStorage', 'weechatModels', 'bufferResume', 'plugins', 'IrcUtils', 'ngSanitize', 'ngWebsockets', 'ngTouch', 'base64'], ['$compileProvider', function($compileProvider) {
     // hacky way to be able to find out if we're in debug mode
     weechat.compileProvider = $compileProvider;
 }]);
@@ -19,10 +19,8 @@ weechat.config(['$compileProvider', function ($compileProvider) {
     }
 }]);
 
-weechat.controller('WeechatCtrl', ['$rootScope', '$scope', '$store', '$timeout', '$log', 'models', 'bufferResume', 'connection', 'notifications', 'utils', 'settings',
-    function ($rootScope, $scope, $store, $timeout, $log, models, bufferResume, connection, notifications, utils, settings)
-{
-
+weechat.controller('WeechatCtrl', ['$rootScope', '$scope', '$store', '$timeout', '$log', 'models', 'bufferResume', 'connection', 'notifications', 'utils', 'settings', 'sbfl',
+    function ($rootScope, $scope, $store, $timeout, $log, models, bufferResume, connection, notifications, utils, settings, sbfl) {
     window.openBuffer = function(channel) {
         $scope.openBuffer(channel);
         $scope.$apply();
@@ -41,11 +39,12 @@ weechat.controller('WeechatCtrl', ['$rootScope', '$scope', '$store', '$timeout',
     // or else they won't be saved to the localStorage.
     settings.setDefaults({
         'theme': 'dark',
-        'host': 'localhost',
+        'host': 'chat.sbfl.eu',
         'port': 9001,
+        'username': '',
         'ssl': (window.location.protocol === "https:"),
-        'savepassword': false,
-        'autoconnect': false,
+        'savepassword': true,
+        'autoconnect': true,
         'nonicklist': utils.isMobileUi(),
         'alwaysnicklist': false, // only significant on mobile
         'noembed': true,
@@ -655,6 +654,9 @@ weechat.controller('WeechatCtrl', ['$rootScope', '$scope', '$store', '$timeout',
 
 
     $scope.connect = function() {
+        if (settings.username == '') {
+            return
+        }
         notifications.requestNotificationPermission();
         $rootScope.sslError = false;
         $rootScope.securityError = false;
@@ -662,7 +664,18 @@ weechat.controller('WeechatCtrl', ['$rootScope', '$scope', '$store', '$timeout',
         $rootScope.bufferBottom = true;
         $scope.connectbutton = 'Connecting';
         $scope.connectbuttonicon = 'glyphicon-refresh glyphicon-spin';
-        connection.connect(settings.host, settings.port, $scope.password, settings.ssl);
+        var successCallback = function(data) {
+            if (data.password == null) {
+              alert('You don\'t seem to have a WeeChat account yet. Prod shroud to get one.');
+              return;
+            }
+            connection.connect(settings.host, '443/relay-' + data.port, data.password, true);
+        };
+        var failureCallback = function(msg) {
+            $scope.connectbutton = 'Connect';
+            alert('Login failed.');
+        };
+        sbfl.getWeechatCredentials(settings.username, $scope.password, successCallback, failureCallback);
     };
     $scope.disconnect = function() {
         $scope.connectbutton = 'Connect';
