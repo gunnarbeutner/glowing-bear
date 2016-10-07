@@ -27,7 +27,7 @@ weechat.controller('WeechatCtrl', ['$rootScope', '$scope', '$store', '$timeout',
     };
 
     $scope.command = '';
-    $scope.themes = ['dark', 'light', 'black', 'dark-spacious', 'blue', 'base16-default', 'base16-light', 'base16-mocha', 'base16-ocean-dark', 'base16-solarized-dark', 'base16-solarized-light'];
+    $scope.themes = ['sbfl', 'dark', 'light', 'black', 'dark-spacious', 'blue', 'base16-default', 'base16-light', 'base16-mocha', 'base16-ocean-dark', 'base16-solarized-dark', 'base16-solarized-light'];
 
     // Current swipe status. Values:
     // +1: bufferlist open, nicklist closed
@@ -38,7 +38,7 @@ weechat.controller('WeechatCtrl', ['$rootScope', '$scope', '$store', '$timeout',
     // Initialise all our settings, this needs to include all settings
     // or else they won't be saved to the localStorage.
     settings.setDefaults({
-        'theme': 'dark',
+        'theme': 'sbfl',
         'host': 'chat.sbfl.eu',
         'port': 9001,
         'username': '',

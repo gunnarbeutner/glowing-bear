@@ -1,5 +1,5 @@
 # Common flags for electron-packager on all platforms
-ELECTRON_COMMON=. "Glowing Bear" --overwrite --version-string.FileDescription="Glowing Bear" --ignore=node_modules --ignore=test --ignore=bower_components
+ELECTRON_COMMON=. "SBFL Chat" --overwrite --version-string.FileDescription="SBFL Chat" --ignore=node_modules --ignore=test --ignore=bower_components
 
 # fetch dependencies for local installation
 bower:

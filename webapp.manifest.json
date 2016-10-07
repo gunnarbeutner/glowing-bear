@@ -1,7 +1,7 @@
 {
     "lang": "en-US",
-    "name": "Glowing Bear",
-    "short_name": "Glowing Bear",
+    "name": "SBFL Chat",
+    "short_name": "SBFL Chat",
     "icons": [{
         "src": "assets/img/glowing_bear_60x60.png",
         "sizes": "60x60",
